@@ -16,35 +16,25 @@ class _CustomInputFieldState extends State<CustomInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 70,
-      child: Flexible(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(2),
+    return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child:
+          TextFormField(
+            keyboardType: TextInputType.number,
+            controller: valueController,
+            decoration: InputDecoration(
+              labelText: "valor do empréstimo",
+              labelStyle: TextStyle(color: Colors.orange),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.orange),
               ),
-              border: Border.all(color: Colors.red)),
-          child: Focus(
-              onFocusChange: (focus) {
-                setState(() {
-                  // onFocus = focus;
-                });
-              },
-              child: Theme(
-                  data: ThemeData(
-                      inputDecorationTheme: InputDecorationTheme(
-                          // labelStyle:
-                          )),
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: valueController,
-                  ))),
-        ),
-      )),
-    );
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.orange, width: 2),
+              ),
+            ),
+          ),
+        );
   }
 }

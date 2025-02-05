@@ -1,8 +1,9 @@
 import 'package:empresta_app_mobile/src/app_module.dart';
 import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
 import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/dropdowns/custom_dropdown_selection.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/forms/custom_check_selection_field.dart';
+import 'package:empresta_app_mobile/src/shared/widgets/buttons/custom_simple_text_button.dart';
+import 'package:empresta_app_mobile/src/shared/widgets/dropdowns/custom_string_dropdown_selection.dart';
+import 'package:empresta_app_mobile/src/shared/widgets/dropdowns/custom_number_dropdown_selection.dart';
 import 'package:empresta_app_mobile/src/shared/widgets/forms/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,10 @@ class AppHomeView extends StatefulWidget {
 }
 
 class _AppHomeViewState extends State<AppHomeView> {
-  final TextEditingController valueController = TextEditingController();
+  late TextEditingController valueController = TextEditingController();
+  late ValueNotifier installmentController = ValueNotifier(36);
+  late TextEditingController institutionController = TextEditingController();
+  late TextEditingController agreementController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,54 +46,36 @@ class _AppHomeViewState extends State<AppHomeView> {
           children: [
             Column(
               children: [
-                CustomInputField(value: valueController,),
-                // CustomCheckSelectionField(value: "1", values: ["1", "2", "3"]),
-                CustomDropdownSelection(value: 0, values: [12,36]),
-                // SizedBox(
-                //   height: 70,
-                //   child: Flexible(
-                //       child: Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: DecoratedBox(
-                //       decoration: BoxDecoration(
-                //           color: Colors.transparent,
-                //           borderRadius: BorderRadius.all(
-                //             Radius.circular(2),
-                //           ),
-                //           border: Border.all(color: Colors.red)),
-                //       child: Focus(
-                //           onFocusChange: (focus) {
-                //             setState(() {
-                //               // onFocus = focus;
-                //             });
-                //           },
-                //           child: Theme(
-                //               data: ThemeData(
-                //                   inputDecorationTheme:
-                //                       InputDecorationTheme(
-                //                           // labelStyle:
-                //                           )),
-                //               child: TextFormField(
-                //                 keyboardType: TextInputType.number,
-                //                 controller: valueController,
-                //               ))),
-                //     ),
-                //   )),
-                // ),
-                SizedBox(
-                  height: 70,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(
-                            Colors.orange),
-                      ),
-                      child: const Text("Simular"),
-                    ),
-                  ),
-                )
+                CustomInputField(
+                  value: valueController,
+                ),
+                CustomNumberDropdownSelection(
+                  title: "Quantidade de parcelas",
+                  onChanged: (installment) {
+                    setState(() {
+                      installmentController.value = installment;
+                    });
+                  },
+                  value: installmentController.value,
+                  values: [36, 48, 60, 72, 84],
+                ),
+                CustomStringDropdownSelection(
+                  title: "Instituições",
+                  onChanged: (institution) {
+                    institutionController.text = institution;
+                  },
+                  value: institutionController.text,
+                  values: ["Um", "Dois"],
+                ),
+                CustomStringDropdownSelection(
+                  title: "Convênios",
+                  onChanged: (agreement) {
+                    agreementController.text = agreement;
+                  },
+                  value: agreementController.text,
+                  values: ["Novo", "Velho"],
+                ),
+                CustomSimpleTextButton(text: "SIMULAR", onPressed: () {})
               ],
             ),
           ],

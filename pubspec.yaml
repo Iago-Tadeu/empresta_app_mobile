@@ -8,7 +8,9 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  build_runner: ^2.4.14
   equatable: ^2.0.7
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
 
@@ -16,6 +18,8 @@ dependencies:
   flutter_masked_text2: ^0.9.1
   flutter_modular: ^6.3.4
   flutter_native_splash: ^2.4.4
+  json_annotation: ^4.9.0
+  json_serializable: ^6.9.3
 
 dev_dependencies:
   flutter_test:
