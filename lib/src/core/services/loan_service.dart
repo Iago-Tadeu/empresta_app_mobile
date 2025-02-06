@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:empresta_app_mobile/src/core/helpers/response_status_helper.dart';
-import 'package:empresta_app_mobile/src/core/repositories/loan_repository.dart';
-import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import 'package:Empresta_app_mobile/src/core/helpers/response_status_helper.dart';
+import 'package:Empresta_app_mobile/src/core/repositories/loan_repository.dart';
+import 'package:Empresta_app_mobile/src/domain/models/agreement_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+
 
 class LoanService {
   LoanService._internal();

@@ -1,8 +1,8 @@
-name: empresta_app_mobile
-description: "Test mobile of Iago"
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+name: Empresta_app_mobile
+description: Test mobile of Iago
+publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1
 
 environment:
   sdk: ^3.6.0
@@ -25,9 +25,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
+  flutter_launcher_icons: ^0.14.3
   flutter_lints: ^5.0.0
+
+flutter_icons:
+  image_path: "assets/images/empresta.png"
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true

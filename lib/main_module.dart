@@ -1,5 +1,5 @@
-import 'package:empresta_app_mobile/src/app_module.dart';
-import 'package:empresta_app_mobile/src/modules/app_status/app_status_module.dart';
+import 'package:Empresta_app_mobile/src/app_module.dart';
+import 'package:Empresta_app_mobile/src/modules/app_status/app_status_module.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -20,6 +20,5 @@ class MainModule extends Module {
           ModuleRoute(_status, module: AppStatusModule()),
           ModuleRoute(_initial, module: AppModule()),
         ]);
-    // r.redirect("/", to: _status);
   }
 }

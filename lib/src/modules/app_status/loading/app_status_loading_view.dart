@@ -23,13 +23,36 @@ class _AppStatusLoadingViewState extends State<AppStatusLoadingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Spacer(),
-        Expanded(
-          child: Image.asset("assets/images/like.png"),
-        ),
-        Spacer(),
-      ]),
+      body: Center(
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              "assets/images/like.png",
+              fit: BoxFit.cover,
+            )),
+      ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: BlocListener<AppCubit, AppCubitState>(
+  //       listener: (context, state) {
+  //         if (state.status == CubitStateStatusEnum.initial) {
+  //           Modular.to.pushReplacementNamed("/app/home");
+  //         }
+  //       },
+  //       child: Center(
+  //         child: ClipRRect(
+  //             borderRadius: BorderRadius.circular(8),
+  //             child: Image.asset(
+  //               "assets/images/like.png",
+  //               fit: BoxFit.cover,
+  //             )),
+  //       ),
+  //     ),
+  //   );
+  // }
+
 }

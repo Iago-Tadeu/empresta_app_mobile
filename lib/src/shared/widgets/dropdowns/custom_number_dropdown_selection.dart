@@ -28,8 +28,7 @@ class _CustomNumberDropdownSelectionState
   void initState() {
     super.initState();
     _isExternalNotifier = widget.value != null;
-    valueController =
-        widget.value ?? ValueNotifier<int?>(null);
+    valueController = widget.value ?? ValueNotifier<int?>(null);
 
     valueController.addListener(() {
       setState(() {});
@@ -54,11 +53,10 @@ class _CustomNumberDropdownSelectionState
           labelStyle: TextStyle(color: Colors.orange),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.orange),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.orange, width: 2),
+            borderSide: BorderSide(color: Colors.orange),
           ),
         ),
         value: valueController.value,
@@ -80,7 +78,6 @@ class _CustomNumberDropdownSelectionState
         },
         icon: Icon(
           Icons.arrow_drop_down,
-          color: Colors.orange,
         ),
         dropdownColor: Colors.white,
       ),

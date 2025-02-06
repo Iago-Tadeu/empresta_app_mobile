@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
-import 'package:empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
-import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
-import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
+import 'package:Empresta_app_mobile/src/core/services/loan_service.dart';
+import 'package:Empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
+import 'package:Empresta_app_mobile/src/domain/models/agreement_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import 'package:Empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

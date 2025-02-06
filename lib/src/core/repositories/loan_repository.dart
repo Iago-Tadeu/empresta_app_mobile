@@ -1,7 +1,7 @@
+import 'package:Empresta_app_mobile/src/core/adapters/loan_adapter.dart';
+import 'package:Empresta_app_mobile/src/core/helpers/response_status_helper.dart';
+import 'package:Empresta_app_mobile/src/domain/constants/app_constants.dart';
 import 'package:dio/dio.dart';
-import 'package:empresta_app_mobile/src/core/adapters/loan_adapter.dart';
-import 'package:empresta_app_mobile/src/core/helpers/response_status_helper.dart';
-import 'package:empresta_app_mobile/src/domain/constants/app_constants.dart';
 
 class LoanRepository {
   final Dio _dio = Dio();

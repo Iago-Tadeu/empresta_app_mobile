@@ -1,8 +1,9 @@
-import 'dart:convert';
+import "dart:convert";
 
-import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import "package:Empresta_app_mobile/src/domain/models/agreement_model.dart";
+import "package:Empresta_app_mobile/src/domain/models/institution_model.dart";
+import "package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart";
+
 
 abstract class LoanAdapter {
   static List<LoanOfferModel> getOffersFromJson(
@@ -40,8 +41,8 @@ abstract class LoanAdapter {
     return jsonList.asMap().entries.map((json) {
       return InstitutionModel(
         id: "${json.key + 1}",
-        name: json.value['chave'],
-        type: json.value['valor'],
+        name: json.value["chave"],
+        type: json.value["valor"],
       );
     }).toList();
   }
@@ -56,8 +57,8 @@ abstract class LoanAdapter {
     return jsonList.asMap().entries.map((json) {
       return AgreementModel(
         id: "${json.key + 1}",
-        name: json.value['chave'],
-        type: json.value['valor'],
+        name: json.value["chave"],
+        type: json.value["valor"],
       );
     }).toList();
   }

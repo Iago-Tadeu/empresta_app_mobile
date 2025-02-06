@@ -1,11 +1,12 @@
-import 'package:empresta_app_mobile/src/domain/models/loan_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
-import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
-import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/buttons/custom_simple_text_button.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/dropdowns/custom_dropdown_selection.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/dropdowns/custom_number_dropdown_selection.dart';
-import 'package:empresta_app_mobile/src/shared/widgets/forms/custom_input_field.dart';
+
+import 'package:Empresta_app_mobile/src/domain/models/loan_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import 'package:Empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
+import 'package:Empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
+import 'package:Empresta_app_mobile/src/shared/widgets/buttons/custom_simple_text_button.dart';
+import 'package:Empresta_app_mobile/src/shared/widgets/dropdowns/custom_dropdown_selection.dart';
+import 'package:Empresta_app_mobile/src/shared/widgets/dropdowns/custom_number_dropdown_selection.dart';
+import 'package:Empresta_app_mobile/src/shared/widgets/forms/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,23 +38,18 @@ class _AppHomeViewState extends State<AppHomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppCubitState>(
-        //     buildWhen: (previous, current) {
-        //   return Modular.to.path == routeHome;
-        // },
         builder: (context, state) {
       handleState(state);
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
-            // systemNavigationBarColor: Colors.black,
             statusBarColor: Colors.orange,
           ),
           title: Text(
             "Simulador App",
             style: TextStyle(color: Colors.white),
           ),
-          // centerTitle: true,
           backgroundColor: Colors.orange,
           surfaceTintColor: Colors.blueGrey,
         ),
@@ -87,15 +83,8 @@ class _AppHomeViewState extends State<AppHomeView> {
                   CustomSimpleTextButton(
                       text: "SIMULAR",
                       onPressed: () {
-                        // LoanService.instance.getInstitutions();
                         handleSimulation();
                       }),
-                  // CustomSimpleTextButton(
-                  //     text: "Testar propostas",
-                  //     onPressed: () {
-                  //       print("${offers.length} ${state.offers?.length} ");
-                  //       print(offers);
-                  //     }),
                 ],
               ),
             ),
@@ -115,10 +104,10 @@ class _AppHomeViewState extends State<AppHomeView> {
                             margin: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             child: ListTile(
-                              // leading: Image.asset(
-                              //   'assets/images/${offer.banco.toLowerCase()}.png',
-                              //   width: 40,
-                              // ),
+                              leading: Image.asset(
+                                'assets/images/${offers[index].bank.toLowerCase()}.png',
+                                width: 40,
+                              ),
                               title: Text(
                                 "R\$ ${offers[index].simulatedAmount.toStringAsFixed(2)} - ${offers[index].installments}x R\$ ${offers[index].installmentAmount.toStringAsFixed(2)}",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -164,7 +153,5 @@ class _AppHomeViewState extends State<AppHomeView> {
 
   void handleState(AppCubitState state) {
     offers = state.offers ?? offers;
-    print("Aqui na manipulação");
-    print("${offers.length} ${state.offers?.length} ");
   }
 }

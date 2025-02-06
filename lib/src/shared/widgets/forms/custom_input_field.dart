@@ -54,15 +54,14 @@ class _CustomInputFieldState extends State<CustomInputField> {
           }
         },
         decoration: InputDecoration(
-          labelText: "valor do empréstimo",
+          labelText: "Valor do empréstimo",
           labelStyle: TextStyle(color: Colors.orange),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.orange),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.orange, width: 2),
+            borderSide: BorderSide(color: Colors.orange),
           ),
         ),
       ),

@@ -1,7 +1,7 @@
-import 'package:empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
-import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
-import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import 'package:Empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
+import 'package:Empresta_app_mobile/src/domain/models/agreement_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart';
 import 'package:equatable/equatable.dart';
 
 class AppCubitState extends Equatable {

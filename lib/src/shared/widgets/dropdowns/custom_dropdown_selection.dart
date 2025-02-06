@@ -1,4 +1,4 @@
-import 'package:empresta_app_mobile/src/domain/models/loan_model.dart';
+import 'package:Empresta_app_mobile/src/domain/models/loan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 
@@ -36,29 +36,31 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
       child: MultiDropdown(
         items: loanItems,
         controller: MultiSelectController<LoanModel>(),
-        enabled: true,
-        chipDecoration: const ChipDecoration(
-          backgroundColor: Colors.grey,
+        chipDecoration: ChipDecoration(
+          borderRadius: BorderRadius.zero,
+          labelStyle: TextStyle(color: Colors.orange),
+          backgroundColor: Colors.white,
           wrap: true,
         ),
-        // searchEnabled: true,
         fieldDecoration: FieldDecoration(
-          hintText: widget.title,
-          hintStyle: const TextStyle(color: Colors.black),
+          labelText: widget.title,
+          labelStyle: TextStyle(color: Colors.orange),
+          hintText: "",
+          padding: EdgeInsets.all(8),
           showClearIcon: false,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.black),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: Colors.black,
-            ),
+            borderSide: const BorderSide(color: Colors.orange),
           ),
         ),
-        dropdownItemDecoration: const DropdownItemDecoration(
-          selectedIcon: Icon(Icons.check_box, color: Colors.black),
+        dropdownItemDecoration: DropdownItemDecoration(
+          selectedBackgroundColor: Colors.orange,
+          selectedTextColor: Colors.white,
+          backgroundColor: Colors.white,
         ),
         onSelectionChange: (selectedItems) {
           widget.onChanged(selectedItems);
@@ -66,43 +68,5 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
         },
       ),
     );
-
-    // return Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: DropdownButtonFormField(
-    //     decoration: InputDecoration(
-    //       labelText: widget.title,
-    //       labelStyle: TextStyle(color: Colors.orange),
-    //       border: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(8),
-    //         borderSide: BorderSide(color: Colors.orange),
-    //       ),
-    //       focusedBorder: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(8),
-    //         borderSide: BorderSide(color: Colors.orange, width: 2),
-    //       ),
-    //     ),
-    //     value: _currentValue,
-    //     items: widget.values.map((LoanModel item) {
-    //       return DropdownMenuItem(
-    //         value: item,
-    //         child: Text(item.name),
-    //       );
-    //     }).toList(),
-    //     onChanged: (newValue) {
-    //       if (newValue != null) {
-    //         setState(() {
-    //           _currentValue = newValue;
-    //         });
-    //         widget.onChanged(newValue);
-    //       }
-    //     },
-    //     icon: Icon(
-    //       Icons.arrow_drop_down,
-    //       color: Colors.orange,
-    //     ),
-    //     dropdownColor: Colors.white,
-    //   ),
-    // );
   }
 }

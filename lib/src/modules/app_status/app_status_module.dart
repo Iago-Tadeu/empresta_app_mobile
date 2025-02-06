@@ -1,4 +1,5 @@
-import 'package:empresta_app_mobile/src/modules/app_status/loading/app_status_loading_page.dart';
+
+import 'package:Empresta_app_mobile/src/modules/app_status/loading/app_status_loading_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 const String _loading = "/loading";
