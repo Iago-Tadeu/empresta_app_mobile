@@ -27,9 +27,9 @@ class AppCubitState extends Equatable {
   }) {
     return AppCubitState(
       status: status ?? this.status,
-      institutions: institutions ?? this.institutions,
-      agreements: agreements ?? this.agreements,
-      offers: offers ?? this.offers,
+      institutions: institutions ?? this.institutions ?? [],
+      agreements: agreements ?? this.agreements ?? [],
+      offers: offers ?? this.offers ?? [],
       refresh: !refresh,
     );
   }

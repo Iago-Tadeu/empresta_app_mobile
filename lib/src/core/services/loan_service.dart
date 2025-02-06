@@ -12,25 +12,32 @@ class LoanService {
   static final LoanService _instance = LoanService._internal();
 
   static LoanService get instance => _instance;
+
   static bool _hasInit = false;
 
   final LoanRepository _loanRepository = LoanRepository();
 
   final StreamController<List<InstitutionModel>> _streamControllerInstitutions =
       StreamController<List<InstitutionModel>>.broadcast();
+  final StreamController<List<AgreementModel>> _streamControllerAgreements =
+      StreamController<List<AgreementModel>>.broadcast();
+  final StreamController<List<LoanOfferModel>> _streamControllerOffers =
+      StreamController<List<LoanOfferModel>>.broadcast();
 
   late List<InstitutionModel> _institutions = [];
   late List<AgreementModel> _agreements = [];
   late List<LoanOfferModel> _offers = [];
 
   List<InstitutionModel> get institutions => _institutions;
-
   List<AgreementModel> get agreements => _agreements;
-
   List<LoanOfferModel> get offers => _offers;
 
-  Stream<List<InstitutionModel>> get streamInstitution =>
+  Stream<List<InstitutionModel>> get streamInstitutions =>
       _streamControllerInstitutions.stream;
+  Stream<List<AgreementModel>> get streamAgreements =>
+      _streamControllerAgreements.stream;
+  Stream<List<LoanOfferModel>> get streamOffers =>
+      _streamControllerOffers.stream;
 
   static Future<void> init() async {
     if (!_hasInit) {
@@ -57,59 +64,50 @@ class LoanService {
     _updateStream();
   }
 
-  Future<List<AgreementModel>> getAgreements() async {
-    final (ResponseStatusHelper, List<AgreementModel>) data =
-        await _loanRepository.getAgreements();
+  Future<void> getAgreements() async {
+    final ResponseStatusHelper payload = await _loanRepository.getAgreements();
 
-    switch (data.$1) {
+    switch (payload) {
       case Success():
-        _agreements = data.$2;
+        _agreements = payload.data;
         print("Simulação bem-sucedida.");
       case Failure():
-        print("Erro: ${data.$1}");
+        print("Erro: ${payload.error}");
         break;
       case Loading():
         print("Carregando...");
         break;
     }
-    return data.$2;
+    _updateStream();
   }
 
-  Future<(ResponseStatusHelper, List<LoanOfferModel>)> requestSimulation(
+  Future<void> requestSimulation(
     double value,
     List<String> institution,
     List<String> agreement,
     int installment,
   ) async {
-    final (ResponseStatusHelper, List<LoanOfferModel>) data =
-        await _loanRepository.simulationRequest(
+    final ResponseStatusHelper data = await _loanRepository.simulationRequest(
       value,
       institution,
       agreement,
       installment,
     );
 
-    switch (data.$1) {
+    switch (data) {
       case Success():
-        _offers = data.$2;
-        print("Simulação bem-sucedida: ${data.$1}");
+        _offers = data.data;
+        print("Simulação bem-sucedida: ${data.data}");
         break;
       case Failure():
-        print("Erro: ${data.$1}");
+        print("Erro: ${data.error}");
         break;
       case Loading():
         print("Carregando...");
         break;
     }
-
-    // if (response.$1.status == ResponseStatusEnum.failed) {
-    //   NotificationController.alert(response: response.$1);
-    // }
-    //
-    // if (response.$1.status == ResponseStatusEnum.success) {
-    // }
-
-    return data;
+    _updateStream();
+    print("Passou aqui no update stream ${_offers.length}");
   }
 
   void _init() {
@@ -119,5 +117,7 @@ class LoanService {
 
   void _updateStream() {
     _streamControllerInstitutions.sink.add(_institutions);
+    _streamControllerAgreements.sink.add(_agreements);
+    _streamControllerOffers.sink.add(_offers);
   }
 }

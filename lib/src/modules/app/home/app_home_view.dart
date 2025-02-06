@@ -1,6 +1,5 @@
-import 'package:empresta_app_mobile/src/app_module.dart';
-import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
 import 'package:empresta_app_mobile/src/domain/models/loan_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
 import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
 import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
 import 'package:empresta_app_mobile/src/shared/widgets/buttons/custom_simple_text_button.dart';
@@ -31,14 +30,18 @@ class _AppHomeViewState extends State<AppHomeView> {
     super.dispose();
   }
 
-  List<LoanModel>? selectedInstitutions;
-  List<LoanModel>? selectedAgreements;
+  late List<LoanModel> selectedInstitutions = [];
+  late List<LoanModel> selectedAgreements = [];
+  late List<LoanOfferModel> offers = [];
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppCubitState>(buildWhen: (previous, current) {
-      return Modular.to.path == routeHome;
-    }, builder: (context, state) {
+    return BlocBuilder<AppCubit, AppCubitState>(
+        //     buildWhen: (previous, current) {
+        //   return Modular.to.path == routeHome;
+        // },
+        builder: (context, state) {
+      handleState(state);
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -84,44 +87,53 @@ class _AppHomeViewState extends State<AppHomeView> {
                   CustomSimpleTextButton(
                       text: "SIMULAR",
                       onPressed: () {
-                        LoanService.instance.getInstitutions();
-                        // handleSimulation();
+                        // LoanService.instance.getInstitutions();
+                        handleSimulation();
                       }),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: state.offers?.length,
-                          itemBuilder: (context, index) {
-                            final offer = state.offers?[index];
-                            return Card(
-                              elevation: 2,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: ListTile(
-                                // leading: Image.asset(
-                                //   'assets/images/${offer.banco.toLowerCase()}.png',
-                                //   width: 40,
-                                // ),
-                                title: Text(
-                                  "R\$ ${offer?.simulatedAmount.toStringAsFixed(2)} - ${offer?.installments}x R\$ ${offer?.installmentAmount.toStringAsFixed(2)}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                    "${offer?.bank} (${offer?.agreement}) - ${offer?.rate}%"),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  )
+                  // CustomSimpleTextButton(
+                  //     text: "Testar propostas",
+                  //     onPressed: () {
+                  //       print("${offers.length} ${state.offers?.length} ");
+                  //       print(offers);
+                  //     }),
                 ],
               ),
             ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: offers.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 2,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: ListTile(
+                              // leading: Image.asset(
+                              //   'assets/images/${offer.banco.toLowerCase()}.png',
+                              //   width: 40,
+                              // ),
+                              title: Text(
+                                "R\$ ${offers[index].simulatedAmount.toStringAsFixed(2)} - ${offers[index].installments}x R\$ ${offers[index].installmentAmount.toStringAsFixed(2)}",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                  "${offers[index].bank} (${offers[index].agreement}) - ${offers[index].rate}%"),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       );
@@ -130,16 +142,16 @@ class _AppHomeViewState extends State<AppHomeView> {
 
   void handleSimulation() {
     if (!simulationFormKey.currentState!.validate() ||
-        valueController.value == 0.0) {
+        valueController.value == 0.0 ||
+        valueController.value == null) {
       print("Preencha o valor solicitado");
       return;
     }
     late List<String> institutionNames =
-        selectedInstitutions?.map((institution) => institution.name).toList() ??
-            [];
+        selectedInstitutions.map((institution) => institution.name).toList();
 
     late List<String> agreementNames =
-        selectedAgreements?.map((agreement) => agreement.name).toList() ?? [];
+        selectedAgreements.map((agreement) => agreement.name).toList();
 
     Modular.get<AppCubit>().simulate(
       valueController.value,
@@ -147,5 +159,12 @@ class _AppHomeViewState extends State<AppHomeView> {
       agreementNames,
       installmentController.value,
     );
+    setState(() {});
+  }
+
+  void handleState(AppCubitState state) {
+    offers = state.offers ?? offers;
+    print("Aqui na manipulação");
+    print("${offers.length} ${state.offers?.length} ");
   }
 }

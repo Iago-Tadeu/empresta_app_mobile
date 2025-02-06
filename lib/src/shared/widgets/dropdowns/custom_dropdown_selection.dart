@@ -31,37 +31,40 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiDropdown(
-      items: loanItems,
-      controller: MultiSelectController<LoanModel>(),
-      enabled: true,
-      chipDecoration: const ChipDecoration(
-        backgroundColor: Colors.grey,
-        wrap: true,
-      ),
-      searchEnabled: true,
-      fieldDecoration: FieldDecoration(
-        hintText: 'Selecione os empréstimos',
-        hintStyle: const TextStyle(color: Colors.black87),
-        showClearIcon: false,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: MultiDropdown(
+        items: loanItems,
+        controller: MultiSelectController<LoanModel>(),
+        enabled: true,
+        chipDecoration: const ChipDecoration(
+          backgroundColor: Colors.grey,
+          wrap: true,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Colors.black87,
+        // searchEnabled: true,
+        fieldDecoration: FieldDecoration(
+          hintText: widget.title,
+          hintStyle: const TextStyle(color: Colors.black),
+          showClearIcon: false,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: Colors.black,
+            ),
           ),
         ),
+        dropdownItemDecoration: const DropdownItemDecoration(
+          selectedIcon: Icon(Icons.check_box, color: Colors.black),
+        ),
+        onSelectionChange: (selectedItems) {
+          widget.onChanged(selectedItems);
+          print("Itens selecionados: $selectedItems");
+        },
       ),
-      dropdownItemDecoration: const DropdownItemDecoration(
-        selectedIcon: Icon(Icons.check_box, color: Colors.black),
-      ),
-      onSelectionChange: (selectedItems) {
-        // Lógica ao alterar a seleção
-        print("Itens selecionados: $selectedItems");
-      },
     );
 
     // return Padding(
