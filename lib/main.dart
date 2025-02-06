@@ -1,22 +1,13 @@
 import 'package:empresta_app_mobile/main_module.dart';
+import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
 import 'package:empresta_app_mobile/src/modules/app_status/app_status_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-void main() {
-  runApp(ModularApp(module: MainModule(), child: const MainApp())
-      // const MyApp()
-      );
-  startMainServices();
-  startLazySingletons();
-}
-
-void startMainServices() {
-  // emprestService.init();
-}
-
-void startLazySingletons() {
-  // AppWrapCubit.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LoanService.init();
+  runApp(ModularApp(module: MainModule(), child: const MainApp()));
 }
 
 class MainApp extends StatefulWidget {

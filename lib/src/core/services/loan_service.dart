@@ -4,6 +4,7 @@ import 'package:empresta_app_mobile/src/core/helpers/response_status_helper.dart
 import 'package:empresta_app_mobile/src/core/repositories/loan_repository.dart';
 import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
 import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
 
 class LoanService {
   LoanService._internal();
@@ -12,39 +13,57 @@ class LoanService {
 
   static LoanService get instance => _instance;
   static bool _hasInit = false;
+
   final LoanRepository _loanRepository = LoanRepository();
 
-  // final StreamController<>
+  final StreamController<List<InstitutionModel>> _streamControllerInstitutions =
+      StreamController<List<InstitutionModel>>.broadcast();
 
-  static void init() {
+  late List<InstitutionModel> _institutions = [];
+  late List<AgreementModel> _agreements = [];
+  late List<LoanOfferModel> _offers = [];
+
+  List<InstitutionModel> get institutions => _institutions;
+
+  List<AgreementModel> get agreements => _agreements;
+
+  List<LoanOfferModel> get offers => _offers;
+
+  Stream<List<InstitutionModel>> get streamInstitution =>
+      _streamControllerInstitutions.stream;
+
+  static Future<void> init() async {
     if (!_hasInit) {
       _hasInit = true;
+      _instance._init();
     }
   }
 
-  Future<(ResponseStatusHelper, InstitutionModel)> getInstitutions() async {
-    final (ResponseStatusHelper, InstitutionModel) data =
+  Future<void> getInstitutions() async {
+    final ResponseStatusHelper payload =
         await _loanRepository.getInstitutions();
 
-    switch (data.$1) {
+    switch (payload) {
       case Success():
+        _institutions = payload.data;
         print("Simulação bem-sucedida.");
       case Failure():
-        print("Erro: ${data.$1}");
+        print("Erro: ${payload.error}");
         break;
       case Loading():
         print("Carregando...");
         break;
     }
-    return data;
+    _updateStream();
   }
 
-  Future<(ResponseStatusHelper, AgreementModel)> getAgreements() async {
-    final (ResponseStatusHelper, AgreementModel) data =
+  Future<List<AgreementModel>> getAgreements() async {
+    final (ResponseStatusHelper, List<AgreementModel>) data =
         await _loanRepository.getAgreements();
 
     switch (data.$1) {
       case Success():
+        _agreements = data.$2;
         print("Simulação bem-sucedida.");
       case Failure():
         print("Erro: ${data.$1}");
@@ -53,16 +72,16 @@ class LoanService {
         print("Carregando...");
         break;
     }
-    return data;
+    return data.$2;
   }
 
-  Future<ResponseStatusHelper> requestSimulation(
+  Future<(ResponseStatusHelper, List<LoanOfferModel>)> requestSimulation(
     double value,
     List<String> institution,
     List<String> agreement,
     int installment,
   ) async {
-    final ResponseStatusHelper response =
+    final (ResponseStatusHelper, List<LoanOfferModel>) data =
         await _loanRepository.simulationRequest(
       value,
       institution,
@@ -70,12 +89,13 @@ class LoanService {
       installment,
     );
 
-    switch (response) {
+    switch (data.$1) {
       case Success():
-        print("Simulação bem-sucedida: ${response.data}");
+        _offers = data.$2;
+        print("Simulação bem-sucedida: ${data.$1}");
         break;
       case Failure():
-        print("Erro: ${response.message}");
+        print("Erro: ${data.$1}");
         break;
       case Loading():
         print("Carregando...");
@@ -89,6 +109,15 @@ class LoanService {
     // if (response.$1.status == ResponseStatusEnum.success) {
     // }
 
-    return response;
+    return data;
+  }
+
+  void _init() {
+    getAgreements();
+    getInstitutions();
+  }
+
+  void _updateStream() {
+    _streamControllerInstitutions.sink.add(_institutions);
   }
 }

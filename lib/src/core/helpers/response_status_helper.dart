@@ -2,13 +2,13 @@ sealed class ResponseStatusHelper<T> {
   const ResponseStatusHelper();
 }
 
-class Success<T> extends ResponseStatusHelper<T> {
-  final T data;
+class Success extends ResponseStatusHelper {
+  final dynamic data;
 
   const Success(this.data);
 }
 
-class Failure<T> extends ResponseStatusHelper<T> {
+class Failure extends ResponseStatusHelper {
   final String message;
   final int? statusCode;
   final dynamic error;
@@ -16,6 +16,6 @@ class Failure<T> extends ResponseStatusHelper<T> {
   const Failure({required this.message, this.statusCode, this.error});
 }
 
-class Loading<T> extends ResponseStatusHelper<T> {
+class Loading extends ResponseStatusHelper {
   const Loading();
 }

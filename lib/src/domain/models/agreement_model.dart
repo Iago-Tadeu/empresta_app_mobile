@@ -1,22 +1,24 @@
+import "package:empresta_app_mobile/src/domain/models/loan_model.dart";
 import "package:json_annotation/json_annotation.dart";
 
 part "agreement_model.g.dart";
 
 @JsonSerializable()
-class AgreementModel {
-  late String id;
-  late String name;
-  late String type;
-  late String? image;
+class AgreementModel extends LoanModel {
+  String id;
+  String? image;
 
   AgreementModel({
-    this.id = "",
-    this.name = "",
-    this.type = "",
+    required this.id,
+    required super.name,
+    required super.type,
+    this.image,
   });
 
+  @override
   factory AgreementModel.fromJson(Map<String, dynamic> json) =>
       _$AgreementModelFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$AgreementModelToJson(this);
 }

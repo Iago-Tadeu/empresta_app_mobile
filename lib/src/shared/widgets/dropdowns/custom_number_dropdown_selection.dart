@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class CustomNumberDropdownSelection extends StatefulWidget {
   final String title;
   final List<int> values;
-  final void Function(int) onChanged;
-  final int? value;
+  final void Function(int?) onChanged;
+  final ValueNotifier? value;
 
   const CustomNumberDropdownSelection({
     required this.title,
@@ -21,22 +21,27 @@ class CustomNumberDropdownSelection extends StatefulWidget {
 
 class _CustomNumberDropdownSelectionState
     extends State<CustomNumberDropdownSelection> {
-  late int? _currentValue;
+  late ValueNotifier valueController;
+  late bool _isExternalNotifier;
 
   @override
   void initState() {
     super.initState();
-    _currentValue = widget.value;
+    _isExternalNotifier = widget.value != null;
+    valueController =
+        widget.value ?? ValueNotifier<int?>(null);
+
+    valueController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
-  void didUpdateWidget(covariant CustomNumberDropdownSelection oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.value != _currentValue) {
-      setState(() {
-        _currentValue = widget.value;
-      });
+  void dispose() {
+    if (!_isExternalNotifier) {
+      valueController.dispose();
     }
+    super.dispose();
   }
 
   @override
@@ -56,7 +61,7 @@ class _CustomNumberDropdownSelectionState
             borderSide: BorderSide(color: Colors.orange, width: 2),
           ),
         ),
-        value: _currentValue,
+        value: valueController.value,
         items: widget.values.toSet().map((int number) {
           return DropdownMenuItem<int>(
             value: number,
@@ -68,7 +73,7 @@ class _CustomNumberDropdownSelectionState
         onChanged: (newNumber) {
           if (newNumber != null) {
             setState(() {
-              _currentValue = newNumber;
+              valueController.value = newNumber;
             });
             widget.onChanged(newNumber);
           }
