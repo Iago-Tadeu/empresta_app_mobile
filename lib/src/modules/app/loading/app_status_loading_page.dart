@@ -1,5 +1,5 @@
-import 'package:Empresta_app_mobile/src/modules/app_status/bloc/app_status_cubit.dart';
-import 'package:Empresta_app_mobile/src/modules/app_status/loading/app_status_loading_view.dart';
+import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
+import 'package:empresta_app_mobile/src/modules/app/loading/app_status_loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +14,7 @@ class _SplashState extends State<AppStatusLoadingPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AppStatusCubit(),
+      create: (_) => AppCubit(),
       child: const AppStatusLoadingView(),
     );
   }

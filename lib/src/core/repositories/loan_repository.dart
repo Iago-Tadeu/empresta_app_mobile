@@ -1,6 +1,6 @@
-import 'package:Empresta_app_mobile/src/core/adapters/loan_adapter.dart';
-import 'package:Empresta_app_mobile/src/core/helpers/response_status_helper.dart';
-import 'package:Empresta_app_mobile/src/domain/constants/app_constants.dart';
+import 'package:empresta_app_mobile/src/core/adapters/loan_adapter.dart';
+import 'package:empresta_app_mobile/src/core/helpers/response_status_helper.dart';
+import 'package:empresta_app_mobile/src/domain/constants/app_constants.dart';
 import 'package:dio/dio.dart';
 
 class LoanRepository {
@@ -8,21 +8,19 @@ class LoanRepository {
 
   Future<ResponseStatusHelper> simulationRequest(
     double value,
-    List<String> institution,
-    List<String> agreement,
-    int installment,
+    List<String> institutions,
+    List<String> agreements,
+    int installments,
   ) async {
     late ResponseStatusHelper response = Loading();
 
     final String uri = "$kBaseApiUrl/api/simular";
     final Map<String, dynamic> payload = {
       "valor_emprestimo": value,
-      "instituicoes": institution,
-      "convenios": agreement,
-      "parcela": installment,
+      "instituicoes": institutions,
+      "convenios": agreements,
+      "parcelas": installments,
     };
-    print("Aqui o payload");
-    print(payload);
     try {
       final result = await _dio.post(uri, data: payload);
       response =

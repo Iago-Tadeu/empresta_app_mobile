@@ -1,4 +1,4 @@
-import 'package:Empresta_app_mobile/src/domain/models/loan_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 
@@ -46,11 +46,11 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
           labelText: widget.title,
           labelStyle: TextStyle(color: Colors.orange),
           hintText: "",
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           showClearIcon: false,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.black54),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -64,7 +64,6 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
         ),
         onSelectionChange: (selectedItems) {
           widget.onChanged(selectedItems);
-          print("Itens selecionados: $selectedItems");
         },
       ),
     );

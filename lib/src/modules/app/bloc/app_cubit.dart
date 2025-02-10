@@ -1,30 +1,32 @@
 import 'dart:async';
 
-import 'package:Empresta_app_mobile/src/core/services/loan_service.dart';
-import 'package:Empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
-import 'package:Empresta_app_mobile/src/domain/models/agreement_model.dart';
-import 'package:Empresta_app_mobile/src/domain/models/institution_model.dart';
-import 'package:Empresta_app_mobile/src/domain/models/loan_offer_model.dart';
-import 'package:Empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
+import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
+import 'package:empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
+import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
+import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-class AppCubit extends Cubit<AppCubitState> implements Disposable {
+class AppCubit extends Cubit<AppCubitState> {
   AppCubit() : super(const AppCubitState()) {
     _init();
   }
 
   final LoanService _loanService = LoanService.instance;
 
-  late StreamSubscription<List<InstitutionModel>> _institutions;
-  late StreamSubscription<List<AgreementModel>> _agreements;
-  late StreamSubscription<List<LoanOfferModel>> _offers;
+  late final StreamSubscription<List<InstitutionModel>> _institutionsSubscription;
+  late final StreamSubscription<List<AgreementModel>> _agreementsSubscription;
+  late final StreamSubscription<List<LoanOfferModel>> _offersSubscription;
+  late final StreamSubscription<void> _loadedEntitiesSubscription;
 
   @override
-  void dispose() {
-    unawaited(_institutions.cancel());
-    unawaited(_agreements.cancel());
-    unawaited(_offers.cancel());
+  Future<void> close() {
+    _institutionsSubscription.cancel();
+    _agreementsSubscription.cancel();
+    _offersSubscription.cancel();
+    _loadedEntitiesSubscription.cancel();
+    return super.close();
   }
 
   /// region Public methods
@@ -40,8 +42,6 @@ class AppCubit extends Cubit<AppCubitState> implements Disposable {
     await _loanService.requestSimulation(
         value, institution, agreement, installmentValue);
     _update();
-    print("Aqui no cubit");
-    print(_offers);
   }
 
   /// endregion Public methods
@@ -49,14 +49,17 @@ class AppCubit extends Cubit<AppCubitState> implements Disposable {
   /// region Private methods
 
   void _startListeners() {
-    _institutions = _loanService.streamInstitutions.listen((institutions) {
+    _institutionsSubscription = _loanService.streamInstitutions.listen((institutions) {
       _update();
     });
-    _agreements = _loanService.streamAgreements.listen((agreements) {
+    _agreementsSubscription = _loanService.streamAgreements.listen((agreements) {
       _update();
     });
-    _offers = _loanService.streamOffers.listen((offers) {
+    _offersSubscription = _loanService.streamOffers.listen((offers) {
       _update();
+    });
+    _loadedEntitiesSubscription = _loanService.streamEntities.listen((_) {
+      _setProcessed();
     });
   }
 
@@ -72,6 +75,12 @@ class AppCubit extends Cubit<AppCubitState> implements Disposable {
   void _setLoading() {
     emit(state.copyWith(
       status: CubitStateStatusEnum.loading,
+    ));
+  }
+
+  void _setProcessed() {
+    emit(state.copyWith(
+      status: CubitStateStatusEnum.processed,
     ));
   }
 

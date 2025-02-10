@@ -74,6 +74,7 @@ class _CustomNumberDropdownSelectionState
               valueController.value = newNumber;
             });
             widget.onChanged(newNumber);
+            FocusScope.of(context).requestFocus(FocusNode());
           }
         },
         icon: Icon(

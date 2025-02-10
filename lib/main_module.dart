@@ -1,12 +1,16 @@
-import 'package:Empresta_app_mobile/src/app_module.dart';
-import 'package:Empresta_app_mobile/src/modules/app_status/app_status_module.dart';
+import 'package:empresta_app_mobile/src/app_module.dart';
+import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-const String _status = "/status";
 const String _initial = "/app";
 
 class MainModule extends Module {
+  @override
+  void binds(i) {
+    i.addSingleton<AppCubit>(() => AppCubit());
+  }
+
   @override
   void routes(r) {
     r.child("/",
@@ -17,7 +21,6 @@ class MainModule extends Module {
             ),
         transition: TransitionType.rightToLeft,
         children: [
-          ModuleRoute(_status, module: AppStatusModule()),
           ModuleRoute(_initial, module: AppModule()),
         ]);
   }

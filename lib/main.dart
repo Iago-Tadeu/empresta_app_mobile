@@ -1,7 +1,6 @@
-
-import 'package:Empresta_app_mobile/main_module.dart';
-import 'package:Empresta_app_mobile/src/core/services/loan_service.dart';
-import 'package:Empresta_app_mobile/src/modules/app_status/app_status_module.dart';
+import 'package:empresta_app_mobile/main_module.dart';
+import 'package:empresta_app_mobile/src/app_module.dart';
+import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -26,7 +25,7 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       title: "Empresta app",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
       locale: const Locale("pt", "BR"),
