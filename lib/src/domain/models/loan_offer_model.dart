@@ -1,8 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'loan_offer_model.g.dart';
-
-@JsonSerializable()
 class LoanOfferModel {
   final double rate;
   final int installments;
@@ -19,9 +14,4 @@ class LoanOfferModel {
     required this.agreement,
     required this.bank,
   });
-
-  factory LoanOfferModel.fromJson(Map<String, dynamic> json) =>
-      _$LoanOfferModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LoanOfferModelToJson(this);
 }

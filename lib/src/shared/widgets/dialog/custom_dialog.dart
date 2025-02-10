@@ -5,6 +5,7 @@ void customDialog(BuildContext context, String title, String subtitle) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        backgroundColor: Colors.white,
         title: Row(
           children: [
             Icon(Icons.warning, color: Colors.orange),
@@ -12,17 +13,19 @@ void customDialog(BuildContext context, String title, String subtitle) {
             Text(title),
           ],
         ),
-        content: Text(subtitle),
+        content: Text(
+          subtitle,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text("Cancelar"),
-          ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Confirmar"),
+            style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.orange)),
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              "Continuar",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       );

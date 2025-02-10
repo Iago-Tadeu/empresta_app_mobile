@@ -1,6 +1,6 @@
 import 'package:empresta_app_mobile/src/domain/models/version_model.dart';
 
-const VersionModel kAppVersion = VersionModel(major: 1, minor: 0, patch: 1);
+const VersionModel kAppVersion = VersionModel(major: 1, minor: 0, patch: 0);
 
 /// Aqui pode haver três opções de conexão, sendo a primeira via host da api,
 /// a segunda via endereço para dispositivo virtual(Emulador)

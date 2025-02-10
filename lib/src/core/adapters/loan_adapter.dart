@@ -19,12 +19,10 @@ abstract class LoanAdapter {
             getFilteredOffersFromList(offersList, bank, simulatedAmount));
       } else {
         for (dynamic offerData in offersList) {
-          if (offerData is Map<String, dynamic>) {
-            offers.add(getOfferFromMap(offerData, bank, simulatedAmount));
-          } else if (offerData is List<Map<String, dynamic>>) {
-            offers.addAll(
-                getFilteredOffersFromList(offersList, bank, simulatedAmount));
-          }
+          offerData is Map<String, dynamic>
+              ? offers.add(getOfferFromMap(offerData, bank, simulatedAmount))
+              : offers.addAll(
+                  getFilteredOffersFromList(offersList, bank, simulatedAmount));
         }
       }
     });

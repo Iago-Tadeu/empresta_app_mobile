@@ -4,6 +4,7 @@ import 'package:empresta_app_mobile/src/core/services/loan_service.dart';
 import 'package:empresta_app_mobile/src/domain/enums/cubit_state_status_enum.dart';
 import 'package:empresta_app_mobile/src/domain/models/agreement_model.dart';
 import 'package:empresta_app_mobile/src/domain/models/institution_model.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_model.dart';
 import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
 import 'package:empresta_app_mobile/src/modules/app/bloc/app_cubit_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,8 @@ class AppCubit extends Cubit<AppCubitState> {
 
   final LoanService _loanService = LoanService.instance;
 
-  late final StreamSubscription<List<InstitutionModel>> _institutionsSubscription;
+  late final StreamSubscription<List<InstitutionModel>>
+      _institutionsSubscription;
   late final StreamSubscription<List<AgreementModel>> _agreementsSubscription;
   late final StreamSubscription<List<LoanOfferModel>> _offersSubscription;
   late final StreamSubscription<void> _loadedEntitiesSubscription;
@@ -44,15 +46,25 @@ class AppCubit extends Cubit<AppCubitState> {
     _update();
   }
 
+  void updateSelectedInstitutions(List<LoanModel> institutions) {
+    emit(state.copyWith(selectedInstitutions: institutions));
+  }
+
+  void updateSelectedAgreements(List<LoanModel> agreements) {
+    emit(state.copyWith(selectedAgreements: agreements));
+  }
+
   /// endregion Public methods
 
   /// region Private methods
 
   void _startListeners() {
-    _institutionsSubscription = _loanService.streamInstitutions.listen((institutions) {
+    _institutionsSubscription =
+        _loanService.streamInstitutions.listen((institutions) {
       _update();
     });
-    _agreementsSubscription = _loanService.streamAgreements.listen((agreements) {
+    _agreementsSubscription =
+        _loanService.streamAgreements.listen((agreements) {
       _update();
     });
     _offersSubscription = _loanService.streamOffers.listen((offers) {
@@ -64,11 +76,15 @@ class AppCubit extends Cubit<AppCubitState> {
   }
 
   void _update() {
+    if (isClosed) return;
+
     emit(state.copyWith(
       status: CubitStateStatusEnum.initial,
       institutions: _loanService.institutions,
       agreements: _loanService.agreements,
       offers: _loanService.offers,
+      selectedInstitutions: state.selectedInstitutions,
+      selectedAgreements: state.selectedAgreements,
     ));
   }
 

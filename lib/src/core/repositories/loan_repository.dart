@@ -1,7 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:empresta_app_mobile/src/core/adapters/loan_adapter.dart';
 import 'package:empresta_app_mobile/src/core/helpers/response_status_helper.dart';
 import 'package:empresta_app_mobile/src/domain/constants/app_constants.dart';
-import 'package:dio/dio.dart';
+import 'package:empresta_app_mobile/src/domain/models/loan_offer_model.dart';
 
 class LoanRepository {
   final Dio _dio = Dio();
@@ -23,8 +24,12 @@ class LoanRepository {
     };
     try {
       final result = await _dio.post(uri, data: payload);
-      response =
-          Success( LoanAdapter.getOffersFromJson(result.data, value));
+      if (result.data != null && result.data.isNotEmpty) {
+        response = Success(LoanAdapter.getOffersFromJson(result.data, value));
+      } else {
+        final List<LoanOfferModel> emptyOffers = [];
+        response = Success(emptyOffers);
+      }
     } on DioException catch (e) {
       response = Failure(
         message: e.response?.statusMessage ?? "Erro desconhecido",

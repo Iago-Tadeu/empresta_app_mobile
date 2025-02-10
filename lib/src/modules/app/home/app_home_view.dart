@@ -11,7 +11,9 @@ import 'package:empresta_app_mobile/src/shared/widgets/forms/custom_input_field.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_modular/flutter_modular.dart'
+    hide ModularWatchExtension;
+import 'package:gap/gap.dart';
 
 class AppHomeView extends StatefulWidget {
   const AppHomeView({super.key});
@@ -32,8 +34,6 @@ class _AppHomeViewState extends State<AppHomeView> {
     super.dispose();
   }
 
-  late List<LoanModel> selectedInstitutions = [];
-  late List<LoanModel> selectedAgreements = [];
   late List<LoanOfferModel> offers = [];
 
   @override
@@ -52,80 +52,89 @@ class _AppHomeViewState extends State<AppHomeView> {
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: Colors.orange,
-            surfaceTintColor: Colors.blueGrey,
           ),
-          body: Column(
-            children: [
-              Form(
-                key: simulationFormKey,
-                child: Column(
-                  children: [
-                    CustomInputField(
-                      valueAmount: valueController,
-                    ),
-                    CustomNumberDropdownSelection(
-                      title: "Quantidade de parcelas",
-                      onChanged: (installment) =>
-                          installmentController.value = installment,
-                      value: installmentController,
-                      values: [0, 36, 48, 60, 72, 84],
-                    ),
-                    CustomDropdownSelection(
-                      title: "Instituições",
-                      onChanged: (institutions) =>
-                          selectedInstitutions = institutions,
-                      values: state.institutions as List<LoanModel>,
-                    ),
-                    CustomDropdownSelection(
-                      title: "Convênios",
-                      onChanged: (agreements) =>
-                          selectedAgreements = agreements,
-                      values: state.agreements as List<LoanModel>,
-                    ),
-                    CustomSimpleTextButton(
-                        text: "SIMULAR",
-                        onPressed: () {
-                          handleSimulation();
-                        }),
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: offers.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 2,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: ListTile(
-                                leading: Image.asset(
-                                  'assets/images/${offers[index].bank.toLowerCase()}.png',
-                                  width: 40,
-                                ),
-                                title: Text(
-                                  "R\$ ${offers[index].simulatedAmount.toStringAsFixed(2)} - ${offers[index].installments}x R\$ ${offers[index].installmentAmount.toStringAsFixed(2)}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                    "${offers[index].bank} (${offers[index].agreement}) - ${offers[index].rate}%"),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+          body: ColoredBox(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Form(
+                  key: simulationFormKey,
+                  child: Column(
+                    children: [
+                      Gap(12),
+                      CustomInputField(
+                        valueAmount: valueController,
+                      ),
+                      CustomNumberDropdownSelection(
+                        title: "Quantidade de parcelas",
+                        onChanged: (installment) =>
+                            installmentController.value = installment,
+                        value: installmentController,
+                        values: [0, 36, 48, 60, 72, 84],
+                      ),
+                      CustomDropdownSelection(
+                        title: "Instituições",
+                        onChanged: (institutions) => context
+                            .read<AppCubit>()
+                            .updateSelectedInstitutions(institutions),
+                        values: state.institutions as List<LoanModel>,
+                        selectedValues: state.selectedInstitutions,
+                      ),
+                      CustomDropdownSelection(
+                        title: "Convênios",
+                        onChanged: (agreements) => context
+                            .read<AppCubit>()
+                            .updateSelectedAgreements(agreements),
+                        values: state.agreements as List<LoanModel>,
+                        selectedValues: state.selectedAgreements,
+                      ),
+                      CustomSimpleTextButton(
+                          text: "SIMULAR",
+                          onPressed: () {
+                            handleSimulation(state.selectedInstitutions,
+                                state.selectedAgreements);
+                          }),
+                    ],
                   ),
                 ),
-              )
-            ],
+                Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: offers.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 2,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                child: ListTile(
+                                  leading: Image.asset(
+                                    'assets/images/${offers[index].bank.toLowerCase()}.png',
+                                    width: 40,
+                                  ),
+                                  title: Text(
+                                    "R\$ ${offers[index].simulatedAmount.toStringAsFixed(2)} - ${offers[index].installments}x R\$ ${offers[index].installmentAmount.toStringAsFixed(2)}",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                      "${offers[index].bank} (${offers[index].agreement}) - ${offers[index].rate}%"),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         if (state.status == CubitStateStatusEnum.loading)
@@ -141,7 +150,8 @@ class _AppHomeViewState extends State<AppHomeView> {
     });
   }
 
-  void handleSimulation() {
+  void handleSimulation(List<LoanModel>? filteredInstitutions,
+      List<LoanModel>? filteredAgreements) {
     if (!simulationFormKey.currentState!.validate() ||
         valueController.value == 0.0 ||
         valueController.value == null) {
@@ -149,11 +159,14 @@ class _AppHomeViewState extends State<AppHomeView> {
           context, "Preencha um valor", "Insira um valor para simular.");
       return;
     }
-    late List<String> institutionNames =
-        selectedInstitutions.map((institution) => institution.name).toList();
 
-    late List<String> agreementNames =
-        selectedAgreements.map((agreement) => agreement.name).toList();
+    late List<String> institutionNames = filteredInstitutions != null
+        ? filteredInstitutions.map((institution) => institution.name).toList()
+        : [];
+
+    late List<String> agreementNames = filteredAgreements != null
+        ? filteredAgreements.map((agreement) => agreement.name).toList()
+        : [];
 
     Modular.get<AppCubit>().simulate(
       valueController.value,

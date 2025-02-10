@@ -60,6 +60,7 @@ class _CustomNumberDropdownSelectionState
           ),
         ),
         value: valueController.value,
+        style: TextStyle(color: Colors.orange, fontSize: 16),
         items: widget.values.toSet().map((int number) {
           return DropdownMenuItem<int>(
             value: number,

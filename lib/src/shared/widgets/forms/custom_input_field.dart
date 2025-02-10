@@ -45,6 +45,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
       child: TextFormField(
         keyboardType: TextInputType.number,
         controller: valueController,
+        style: TextStyle(color: Colors.orange),
         onChanged: (newValue) {
           String cleanedValue =
               newValue.replaceAll(RegExp(r"[^\d,]"), "").replaceAll(",", ".");

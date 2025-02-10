@@ -6,11 +6,13 @@ class CustomDropdownSelection extends StatefulWidget {
   final String title;
   final List<LoanModel> values;
   final void Function(List<LoanModel>) onChanged;
+  final List<LoanModel>? selectedValues;
 
   const CustomDropdownSelection({
     required this.title,
     required this.values,
     required this.onChanged,
+    this.selectedValues,
     super.key,
   });
 
@@ -20,13 +22,27 @@ class CustomDropdownSelection extends StatefulWidget {
 }
 
 class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
-  late List<DropdownItem<LoanModel>> loanItems = widget.values.map((loan) {
-    return DropdownItem<LoanModel>(label: loan.name, value: loan);
-  }).toList();
+  late MultiSelectController<LoanModel> controller;
+  late List<DropdownItem<LoanModel>> loanItems;
 
   @override
   void initState() {
     super.initState();
+    loanItems = widget.values.map((loan) {
+      return DropdownItem<LoanModel>(label: loan.name, value: loan);
+    }).toList();
+
+    controller = MultiSelectController<LoanModel>();
+    if (widget.selectedValues != null) {
+      controller
+          .selectWhere((item) => widget.selectedValues!.contains(item.value));
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,9 +51,10 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
       padding: const EdgeInsets.all(8.0),
       child: MultiDropdown(
         items: loanItems,
-        controller: MultiSelectController<LoanModel>(),
+        controller: controller,
         chipDecoration: ChipDecoration(
-          borderRadius: BorderRadius.zero,
+          deleteIcon: Icon(null),
+          borderRadius: BorderRadius.circular(8),
           labelStyle: TextStyle(color: Colors.orange),
           backgroundColor: Colors.white,
           wrap: true,
@@ -64,6 +81,7 @@ class _CustomDropdownSelectionState extends State<CustomDropdownSelection> {
         ),
         onSelectionChange: (selectedItems) {
           widget.onChanged(selectedItems);
+          FocusScope.of(context).requestFocus(FocusNode());
         },
       ),
     );

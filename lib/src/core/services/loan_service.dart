@@ -121,10 +121,10 @@ class LoanService {
       case Success():
         _offers = response.data;
         Fluttertoast.showToast(
-          msg: "Sucesso",
-          toastLength: Toast.LENGTH_SHORT,
+          msg: "Lista atualizada",
+          toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.orangeAccent,
           textColor: Colors.white,
           fontSize: 16.0,
         );

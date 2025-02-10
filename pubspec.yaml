@@ -2,7 +2,7 @@ name: empresta_app_mobile
 description: Test mobile of Iago
 publish_to: 'none'
 
-version: 1.0.1
+version: 1.0.0
 
 environment:
   sdk: ^3.6.0
@@ -11,6 +11,8 @@ dependencies:
   build_runner: ^2.4.14
   equatable: ^2.0.7
   dio: ^5.8.0+1
+  gap: ^3.0.1
+
   flutter:
     sdk: flutter
 

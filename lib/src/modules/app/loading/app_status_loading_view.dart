@@ -22,7 +22,6 @@ class _AppStatusLoadingViewState extends State<AppStatusLoadingView> {
         listener: (context, state) {
           if (state.status == CubitStateStatusEnum.processed) {
             Modular.to.pushReplacementNamed("/app/home");
-            // context.read<AppCubit>().resetState();
           }
         },
         child: Center(
